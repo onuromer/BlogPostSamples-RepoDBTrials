@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RepoDB.Trials.Business.Implementations;
+using RepoDB.Trials.Business.Interfaces;
 using RepoDB.Trials.Business.Repositories;
 using RepoDB.Trials.Core;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RepoDB.Trials.Web.Controllers
 {
@@ -17,17 +17,20 @@ namespace RepoDB.Trials.Web.Controllers
     public class ProductsController : ControllerBase
     {
         private IOptions<AppSettings> settings;
-
-        public ProductsController(IOptions<AppSettings> settings)
+        private IStorage storage;
+        public ProductsController(IOptions<AppSettings> settings, IStorage storage)
         {
             this.settings = settings;
+            this.storage = storage;
         }
         
         [HttpGet]
         public ActionResult Get()
         {
-            var r = new ProductRepository(settings.Value);
-            return new ObjectResult(r.QueryAll());
+            //var r = new ProductRepository(settings.Value);
+            //return new ObjectResult(r.QueryAll());
+
+            return new ObjectResult(storage.GetRepository<Product>().QueryAll());
         }
 
         [HttpGet("{id}")]
