@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RepoDB.Trials.Business.Implementations;
+using RepoDB.Trials.Business.Interfaces;
+using RepoDB.Trials.Business.Repositories;
 
 namespace RepoDB.Trials.Web
 {
@@ -28,7 +30,7 @@ namespace RepoDB.Trials.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddControllersAsServices();
 
             services.AddMvc();
             services.AddOptions();
@@ -37,8 +39,8 @@ namespace RepoDB.Trials.Web
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RepoDB API", Version = "v1" });
             });
 
-            services.AddOptions<AppSettings>().Bind(Configuration.GetSection("SettingsFromApi"));
-
+            services.AddSingleton<IAppSettings>(s => Configuration.GetSection("SettingsFromApi").Get<AppSettings>());
+            services.AddSingleton<IStorage, SqlDbStorage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

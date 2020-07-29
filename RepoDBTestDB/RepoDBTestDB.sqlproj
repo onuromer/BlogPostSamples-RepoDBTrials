@@ -65,6 +65,7 @@
   <ItemGroup>
     <Build Include="dbo\Tables\Products.sql" />
     <Build Include="dbo\Tables\ProductGroups.sql" />
+    <Build Include="dbo\Tables\Stores.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Data\PostDeployment.Data.Seed.sql" />
